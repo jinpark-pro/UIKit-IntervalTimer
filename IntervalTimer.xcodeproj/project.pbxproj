@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		3CA9B4312C1EAB49009FABE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA9B4302C1EAB49009FABE2 /* AppDelegate.swift */; };
 		3CA9B4332C1EAB49009FABE2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA9B4322C1EAB49009FABE2 /* SceneDelegate.swift */; };
-		3CA9B4352C1EAB49009FABE2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA9B4342C1EAB49009FABE2 /* ViewController.swift */; };
+		3CA9B4352C1EAB49009FABE2 /* IntervalTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA9B4342C1EAB49009FABE2 /* IntervalTimerViewController.swift */; };
 		3CA9B4382C1EAB49009FABE2 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 3CA9B4372C1EAB49009FABE2 /* Base */; };
 		3CA9B43A2C1EAB4A009FABE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CA9B4392C1EAB4A009FABE2 /* Assets.xcassets */; };
 		3CA9B43D2C1EAB4A009FABE2 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 3CA9B43C2C1EAB4A009FABE2 /* Base */; };
@@ -19,7 +19,7 @@
 		3CA9B42D2C1EAB49009FABE2 /* IntervalTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntervalTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CA9B4302C1EAB49009FABE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3CA9B4322C1EAB49009FABE2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		3CA9B4342C1EAB49009FABE2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3CA9B4342C1EAB49009FABE2 /* IntervalTimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalTimerViewController.swift; sourceTree = "<group>"; };
 		3CA9B4372C1EAB49009FABE2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3CA9B4392C1EAB4A009FABE2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3CA9B43C2C1EAB4A009FABE2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -58,7 +58,7 @@
 			children = (
 				3CA9B4302C1EAB49009FABE2 /* AppDelegate.swift */,
 				3CA9B4322C1EAB49009FABE2 /* SceneDelegate.swift */,
-				3CA9B4342C1EAB49009FABE2 /* ViewController.swift */,
+				3CA9B4342C1EAB49009FABE2 /* IntervalTimerViewController.swift */,
 				3CA9B4362C1EAB49009FABE2 /* Main.storyboard */,
 				3CA9B4392C1EAB4A009FABE2 /* Assets.xcassets */,
 				3CA9B43B2C1EAB4A009FABE2 /* LaunchScreen.storyboard */,
@@ -138,7 +138,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3CA9B4352C1EAB49009FABE2 /* ViewController.swift in Sources */,
+				3CA9B4352C1EAB49009FABE2 /* IntervalTimerViewController.swift in Sources */,
 				3CA9B4312C1EAB49009FABE2 /* AppDelegate.swift in Sources */,
 				3CA9B4332C1EAB49009FABE2 /* SceneDelegate.swift in Sources */,
 			);
