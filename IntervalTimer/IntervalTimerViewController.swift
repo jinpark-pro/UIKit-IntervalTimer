@@ -51,16 +51,36 @@ class IntervalTimerViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
+    lazy var startButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Start", for: .normal)
+        button.backgroundColor = .brown
+        button.setTitleColor(.white, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
-        startWorkoutTimer()
+        
+        startButton.addAction(UIAction { [weak self] _ in
+            guard let self = self else { return }
+            self.startButton.isEnabled = false
+            self.startButton.backgroundColor = .gray
+            
+            startWorkoutTimer()
+        }, for: .touchUpInside)
+        
+        roundLabel.text = "Round"
+        titleLabel.text = "Workout"
+        secondsLabel.text = "0"
         
         view.backgroundColor = .white
+        
         view.addSubview(container)
         container.addArrangedSubview(roundLabel)
         container.addArrangedSubview(titleLabel)
         container.addArrangedSubview(secondsLabel)
+        container.addArrangedSubview(startButton)
         
         let safeArea = view.safeAreaLayoutGuide
         
@@ -74,7 +94,8 @@ class IntervalTimerViewController: UIViewController {
             titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -16),
             secondsLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
             secondsLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -16),
-            
+            startButton.widthAnchor.constraint(equalToConstant: 200),
+            startButton.heightAnchor.constraint(equalToConstant: 30),
         ])
     }
 
@@ -123,7 +144,9 @@ class IntervalTimerViewController: UIViewController {
     
     func endWorkout() {
         self.titleLabel.text  = "Finish"
-        self.secondsLabel.text = nil
+        self.secondsLabel.text = "0"
+        self.startButton.isEnabled = true
+        self.startButton.backgroundColor = .brown
     }
 }
 
