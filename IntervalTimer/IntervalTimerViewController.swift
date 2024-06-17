@@ -19,6 +19,23 @@ class IntervalTimerViewController: UIViewController {
     var totalRounds = 3
     var currentRound = 1
     
+    var isPlay = false {
+        didSet {
+            if isPlay {
+                startTimer()
+                return
+            }
+            
+            if isRest {
+                pauseTimer(from: "rest")
+            } else {
+                pauseTimer(from: "workout")
+            }
+        }
+    }
+    var isWorkout = false
+    var isRest = false
+    
     lazy var container: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -51,7 +68,7 @@ class IntervalTimerViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    lazy var startButton: UIButton = {
+    lazy var exerciseButton: UIButton = {
         let button = UIButton()
         button.setTitle("Start", for: .normal)
         button.backgroundColor = .brown
@@ -62,12 +79,14 @@ class IntervalTimerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        startButton.addAction(UIAction { [weak self] _ in
+        exerciseButton.addAction(UIAction { [weak self] _ in
             guard let self = self else { return }
-            self.startButton.isEnabled = false
-            self.startButton.backgroundColor = .gray
-            
-            startWorkoutTimer()
+            self.isPlay.toggle()
+            if self.isPlay {
+                self.exerciseButton.setTitle("Pause", for: .normal)
+            } else {
+                self.exerciseButton.setTitle("Resume", for: .normal)
+            }
         }, for: .touchUpInside)
         
         roundLabel.text = "Round"
@@ -80,7 +99,7 @@ class IntervalTimerViewController: UIViewController {
         container.addArrangedSubview(roundLabel)
         container.addArrangedSubview(titleLabel)
         container.addArrangedSubview(secondsLabel)
-        container.addArrangedSubview(startButton)
+        container.addArrangedSubview(exerciseButton)
         
         let safeArea = view.safeAreaLayoutGuide
         
@@ -94,12 +113,30 @@ class IntervalTimerViewController: UIViewController {
             titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -16),
             secondsLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
             secondsLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -16),
-            startButton.widthAnchor.constraint(equalToConstant: 200),
-            startButton.heightAnchor.constraint(equalToConstant: 30),
+            exerciseButton.widthAnchor.constraint(equalToConstant: 200),
+            exerciseButton.heightAnchor.constraint(equalToConstant: 30),
         ])
     }
 
+    func startTimer() {
+        if isRest {
+            startRestTimer()
+        } else {
+            startWorkoutTimer()
+        }
+    }
+    
+    func pauseTimer(from: String) {
+        if from == "rest" {
+            self.restTimer?.invalidate()
+        } else {
+            self.repeatWorkout -= 1
+            self.workoutTimer?.invalidate()
+        }
+    }
+    
     func startWorkoutTimer() {
+        self.isWorkout = true
         self.repeatWorkout += 1
         self.roundLabel.text = "Round \(self.currentRound) / \(self.totalRounds)"
         self.titleLabel.text  = "Workout \(self.repeatWorkout) / \(self.totalRepeatWorkout)"
@@ -110,6 +147,7 @@ class IntervalTimerViewController: UIViewController {
             self.secondsLabel.text = "\(self.workoutTime) seconds"
             if self.workoutTime == 0 {
                 self.workoutTimer?.invalidate()
+                self.isWorkout = false
                 self.workoutTime = self.initialWorkoutTime
                 if self.repeatWorkout == self.totalRepeatWorkout {
                     self.repeatWorkout = 0
@@ -123,6 +161,7 @@ class IntervalTimerViewController: UIViewController {
     }
     
     func startRestTimer() {
+        self.isRest = true
         self.titleLabel.text  = "Rest"
         self.secondsLabel.text = "\(self.restTime) seconds (Rest)"
         restTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
@@ -130,6 +169,7 @@ class IntervalTimerViewController: UIViewController {
             self.restTime -= 1
             self.secondsLabel.text = "\(self.restTime) seconds (Rest)"
             if self.restTime == 0 {
+                self.isRest = false
                 self.restTimer?.invalidate()
                 self.restTime = self.initialRestTime
                 self.currentRound += 1
@@ -145,8 +185,8 @@ class IntervalTimerViewController: UIViewController {
     func endWorkout() {
         self.titleLabel.text  = "Finish"
         self.secondsLabel.text = "0"
-        self.startButton.isEnabled = true
-        self.startButton.backgroundColor = .brown
+        self.exerciseButton.setTitle("Start", for: .normal)
+        self.exerciseButton.backgroundColor = .brown
     }
 }
 
