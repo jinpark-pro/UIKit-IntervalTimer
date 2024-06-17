@@ -10,8 +10,10 @@ import UIKit
 class IntervalTimerViewController: UIViewController {
     var workoutTimer: Timer?
     var restTimer: Timer?
-    let initialWorkoutTIme = 5
+    let initialWorkoutTime = 5
     var workoutTime = 5
+    var repeatWorkout = 0
+    let totalRepeatWorkout = 3
     let initialRestTime = 5
     var restTime = 5
     var totalRounds = 3
@@ -77,8 +79,9 @@ class IntervalTimerViewController: UIViewController {
     }
 
     func startWorkoutTimer() {
+        self.repeatWorkout += 1
         self.roundLabel.text = "Round \(self.currentRound) / \(self.totalRounds)"
-        self.titleLabel.text  = "Workout"
+        self.titleLabel.text  = "Workout \(self.repeatWorkout) / \(self.totalRepeatWorkout)"
         self.secondsLabel.text = "\(self.workoutTime) seconds"
         workoutTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
@@ -86,8 +89,14 @@ class IntervalTimerViewController: UIViewController {
             self.secondsLabel.text = "\(self.workoutTime) seconds"
             if self.workoutTime == 0 {
                 self.workoutTimer?.invalidate()
-                self.workoutTime = self.initialWorkoutTIme
-                self.startRestTimer()
+                self.workoutTime = self.initialWorkoutTime
+                if self.repeatWorkout == self.totalRepeatWorkout {
+                    self.repeatWorkout = 0
+                    self.startRestTimer()
+                } else {
+                    startWorkoutTimer()
+                }
+                
             }
         }
     }
