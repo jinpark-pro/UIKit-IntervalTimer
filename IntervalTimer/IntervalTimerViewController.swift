@@ -19,6 +19,8 @@ class IntervalTimerViewController: UIViewController {
     var totalRounds = 3
     var currentRound = 1
     
+    var initailFontSize = 50
+    
     var isPlay = false {
         didSet {
             if isPlay {
@@ -39,22 +41,19 @@ class IntervalTimerViewController: UIViewController {
     lazy var container: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.distribution = .fill
-        stackView.spacing = 40
+        stackView.alignment = .fill
+        stackView.distribution = .fillProportionally
+        stackView.spacing = 16
         stackView.backgroundColor = .red
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        // set padding
+        stackView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
-    }()
-    lazy var roundLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.backgroundColor = .yellow
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
     }()
     lazy var titleLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 48)
         label.textAlignment = .center
         label.backgroundColor = .green
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -62,9 +61,18 @@ class IntervalTimerViewController: UIViewController {
     }()
     lazy var secondsLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 320)
         label.textAlignment = .center
         label.backgroundColor = .blue
         label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    lazy var roundLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 32)
+        label.textAlignment = .center
+        label.backgroundColor = .yellow
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -73,6 +81,7 @@ class IntervalTimerViewController: UIViewController {
         button.setTitle("Start", for: .normal)
         button.backgroundColor = .brown
         button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 80)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -89,16 +98,16 @@ class IntervalTimerViewController: UIViewController {
             }
         }, for: .touchUpInside)
         
-        roundLabel.text = "Round"
-        titleLabel.text = "Workout"
+        titleLabel.text = "Workout 0 / 0"
         secondsLabel.text = "0"
+        roundLabel.text = "Round 0 / 0"
         
         view.backgroundColor = .white
         
         view.addSubview(container)
-        container.addArrangedSubview(roundLabel)
         container.addArrangedSubview(titleLabel)
         container.addArrangedSubview(secondsLabel)
+        container.addArrangedSubview(roundLabel)
         container.addArrangedSubview(exerciseButton)
         
         let safeArea = view.safeAreaLayoutGuide
@@ -107,14 +116,7 @@ class IntervalTimerViewController: UIViewController {
             container.topAnchor.constraint(equalTo: safeArea.topAnchor),
             container.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             container.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            roundLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
-            roundLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -16),
-            titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -16),
-            secondsLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
-            secondsLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -16),
-            exerciseButton.widthAnchor.constraint(equalToConstant: 200),
-            exerciseButton.heightAnchor.constraint(equalToConstant: 30),
+            container.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
         ])
     }
 
@@ -140,11 +142,11 @@ class IntervalTimerViewController: UIViewController {
         self.repeatWorkout += 1
         self.roundLabel.text = "Round \(self.currentRound) / \(self.totalRounds)"
         self.titleLabel.text  = "Workout \(self.repeatWorkout) / \(self.totalRepeatWorkout)"
-        self.secondsLabel.text = "\(self.workoutTime) seconds"
+        self.secondsLabel.text = "\(self.workoutTime)"
         workoutTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             self.workoutTime -= 1
-            self.secondsLabel.text = "\(self.workoutTime) seconds"
+            self.secondsLabel.text = "\(self.workoutTime)"
             if self.workoutTime == 0 {
                 self.workoutTimer?.invalidate()
                 self.isWorkout = false
@@ -163,11 +165,11 @@ class IntervalTimerViewController: UIViewController {
     func startRestTimer() {
         self.isRest = true
         self.titleLabel.text  = "Rest"
-        self.secondsLabel.text = "\(self.restTime) seconds (Rest)"
+        self.secondsLabel.text = "\(self.restTime)"
         restTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             self.restTime -= 1
-            self.secondsLabel.text = "\(self.restTime) seconds (Rest)"
+            self.secondsLabel.text = "\(self.restTime)"
             if self.restTime == 0 {
                 self.isRest = false
                 self.restTimer?.invalidate()
@@ -190,3 +192,6 @@ class IntervalTimerViewController: UIViewController {
     }
 }
 
+#Preview {
+    IntervalTimerViewController()
+}
