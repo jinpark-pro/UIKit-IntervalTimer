@@ -42,20 +42,26 @@ class IntervalTimerViewController: UIViewController {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .fill
-        stackView.distribution = .fillProportionally
+        stackView.distribution = .fillEqually
         stackView.spacing = 16
-        stackView.backgroundColor = .red
         stackView.translatesAutoresizingMaskIntoConstraints = false
         // set padding
         stackView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
+    lazy var subContainer: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .fillProportionally
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 48)
         label.textAlignment = .center
-        label.backgroundColor = .green
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -63,8 +69,6 @@ class IntervalTimerViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 320)
         label.textAlignment = .center
-        label.backgroundColor = .blue
-        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -72,7 +76,6 @@ class IntervalTimerViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 32)
         label.textAlignment = .center
-        label.backgroundColor = .yellow
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -104,11 +107,13 @@ class IntervalTimerViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        view.addSubview(container)
-        container.addArrangedSubview(titleLabel)
-        container.addArrangedSubview(secondsLabel)
-        container.addArrangedSubview(roundLabel)
+        subContainer.addArrangedSubview(titleLabel)
+        subContainer.addArrangedSubview(secondsLabel)
+        subContainer.addArrangedSubview(roundLabel)
+        container.addArrangedSubview(subContainer)
         container.addArrangedSubview(exerciseButton)
+        
+        view.addSubview(container)
         
         let safeArea = view.safeAreaLayoutGuide
         
@@ -118,8 +123,21 @@ class IntervalTimerViewController: UIViewController {
             container.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             container.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
         ])
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self, UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]) { (self: Self, previousTraitCollection: UITraitCollection) in
+            self.updateStackViewAxis()
+        }
+        updateStackViewAxis()
     }
-
+    
+    func updateStackViewAxis() {
+        if traitCollection.verticalSizeClass == .compact {
+            container.axis = .horizontal
+        } else {
+            container.axis = .vertical
+        }
+    }
+    
     func startTimer() {
         if isRest {
             startRestTimer()
