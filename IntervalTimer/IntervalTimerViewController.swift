@@ -169,13 +169,16 @@ class IntervalTimerViewController: UIViewController {
                 self.workoutTimer?.invalidate()
                 self.isWorkout = false
                 self.workoutTime = self.initialWorkoutTime
-                if self.repeatWorkout == self.totalRepeatWorkout {
+                if self.repeatWorkout != self.totalRepeatWorkout {
+                    startWorkoutTimer()
+                    return
+                }
+                if self.currentRound == self.totalRounds {
+                    endWorkout()
+                } else {
                     self.repeatWorkout = 0
                     self.startRestTimer()
-                } else {
-                    startWorkoutTimer()
                 }
-                
             }
         }
     }
@@ -195,8 +198,6 @@ class IntervalTimerViewController: UIViewController {
                 self.currentRound += 1
                 if self.currentRound <= self.totalRounds {
                     self.startWorkoutTimer()
-                } else {
-                    self.endWorkout()
                 }
             }
         }
