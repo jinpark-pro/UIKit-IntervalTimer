@@ -12,26 +12,19 @@ class IntervalTimerViewController: UIViewController {
     var restTimer: Timer?
     let initialWorkoutTime = 5
     var workoutTime = 5
-    var repeatWorkout = 0
+    var repeatWorkout = 1
     let totalRepeatWorkout = 3
     let initialRestTime = 5
     var restTime = 5
     var totalRounds = 3
     var currentRound = 1
     
-    var initailFontSize = 50
-    
     var isPlay = false {
         didSet {
             if isPlay {
                 startTimer()
-                return
-            }
-            
-            if isRest {
-                pauseTimer(from: "rest")
             } else {
-                pauseTimer(from: "workout")
+                pauseTimer()
             }
         }
     }
@@ -146,21 +139,20 @@ class IntervalTimerViewController: UIViewController {
         }
     }
     
-    func pauseTimer(from: String) {
-        if from == "rest" {
+    func pauseTimer() {
+        if isRest {
             self.restTimer?.invalidate()
         } else {
-            self.repeatWorkout -= 1
             self.workoutTimer?.invalidate()
         }
     }
     
     func startWorkoutTimer() {
         self.isWorkout = true
-        self.repeatWorkout += 1
-        self.roundLabel.text = "Round \(self.currentRound) / \(self.totalRounds)"
+        
         self.titleLabel.text  = "Workout \(self.repeatWorkout) / \(self.totalRepeatWorkout)"
         self.secondsLabel.text = "\(self.workoutTime)"
+        self.roundLabel.text = "Round \(self.currentRound) / \(self.totalRounds)"
         workoutTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             self.workoutTime -= 1
@@ -170,13 +162,14 @@ class IntervalTimerViewController: UIViewController {
                 self.isWorkout = false
                 self.workoutTime = self.initialWorkoutTime
                 if self.repeatWorkout != self.totalRepeatWorkout {
+                    self.repeatWorkout += 1
                     startWorkoutTimer()
                     return
                 }
                 if self.currentRound == self.totalRounds {
                     endWorkout()
                 } else {
-                    self.repeatWorkout = 0
+                    self.repeatWorkout = 1
                     self.startRestTimer()
                 }
             }
@@ -208,6 +201,12 @@ class IntervalTimerViewController: UIViewController {
         self.secondsLabel.text = "0"
         self.exerciseButton.setTitle("Start", for: .normal)
         self.exerciseButton.backgroundColor = .brown
+        // initialize
+        self.repeatWorkout = 1
+        self.currentRound = 1
+        self.isPlay = false
+        self.isRest = false
+        self.isWorkout = false
     }
 }
 
