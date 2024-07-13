@@ -22,6 +22,7 @@ class PresetDetailViewController: UIViewController {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 24)
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -29,10 +30,10 @@ class PresetDetailViewController: UIViewController {
     
     lazy var startButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Start", for: .normal)
+        button.setTitle("Timer", for: .normal)
         button.backgroundColor = .systemBrown
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 40)
         button.addTarget(self, action: #selector(startPreset), for: .touchUpInside)
         
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +44,7 @@ class PresetDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        navigationItem.title = preset["name"] as? String
+        navigationItem.title = "Details"
         
         let initialWorkoutTime = preset["initialWorkoutTime"] as? Int ?? 0
         let totalRepeatWorkout = preset["totalRepeatWorkout"] as? Int ?? 0
@@ -62,14 +63,18 @@ class PresetDetailViewController: UIViewController {
         view.addSubview(detailsLabel)
         view.addSubview(startButton)
         
+        let safeArea = view.safeAreaLayoutGuide
+        
         NSLayoutConstraint.activate([
-            detailsLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            detailsLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            detailsLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            detailsLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 60),
+            detailsLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 20),
+            detailsLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -20),
             
-            startButton.topAnchor.constraint(equalTo: detailsLabel.bottomAnchor, constant: 20),
+            startButton.topAnchor.constraint(equalTo: detailsLabel.bottomAnchor, constant: 60),
             startButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            startButton.widthAnchor.constraint(equalToConstant: 100)
+            startButton.heightAnchor.constraint(equalToConstant: 100),
+            startButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 20),
+            startButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -20),
         ])
     }
 
