@@ -16,6 +16,7 @@
 		3CA9B43A2C1EAB4A009FABE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CA9B4392C1EAB4A009FABE2 /* Assets.xcassets */; };
 		3CA9B43D2C1EAB4A009FABE2 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 3CA9B43C2C1EAB4A009FABE2 /* Base */; };
 		3CBE505A2C42EAE900BCFF41 /* CustomTableViewCellWithButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBE50592C42EAE900BCFF41 /* CustomTableViewCellWithButton.swift */; };
+		3CBE505C2C430D9100BCFF41 /* mainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBE505B2C430D9100BCFF41 /* mainViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		3CA9B43C2C1EAB4A009FABE2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3CA9B43E2C1EAB4A009FABE2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3CBE50592C42EAE900BCFF41 /* CustomTableViewCellWithButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCellWithButton.swift; sourceTree = "<group>"; };
+		3CBE505B2C430D9100BCFF41 /* mainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 			children = (
 				3CA9B4302C1EAB49009FABE2 /* AppDelegate.swift */,
 				3CA9B4322C1EAB49009FABE2 /* SceneDelegate.swift */,
+				3CBE505B2C430D9100BCFF41 /* mainViewController.swift */,
 				3C4B67742C34354000F0F21F /* SettingsViewController.swift */,
 				3C4B67762C34411400F0F21F /* CustomTableViewCell.swift */,
 				3CBE50592C42EAE900BCFF41 /* CustomTableViewCellWithButton.swift */,
@@ -149,6 +152,7 @@
 			files = (
 				3CA9B4352C1EAB49009FABE2 /* IntervalTimerViewController.swift in Sources */,
 				3C4B67772C34411400F0F21F /* CustomTableViewCell.swift in Sources */,
+				3CBE505C2C430D9100BCFF41 /* mainViewController.swift in Sources */,
 				3CBE505A2C42EAE900BCFF41 /* CustomTableViewCellWithButton.swift in Sources */,
 				3CA9B4312C1EAB49009FABE2 /* AppDelegate.swift in Sources */,
 				3CA9B4332C1EAB49009FABE2 /* SceneDelegate.swift in Sources */,

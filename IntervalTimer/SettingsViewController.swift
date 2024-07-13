@@ -50,7 +50,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        titles.count
+        titles.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
