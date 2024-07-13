@@ -16,7 +16,7 @@ class IntervalTimerViewController: UIViewController {
     let totalRepeatWorkout = 3
     let initialRestTime = 5
     var restTime = 5
-    var totalRounds = 3
+    let totalRounds = 3
     var currentRound = 1
     
     var isPlay = false {
@@ -75,7 +75,7 @@ class IntervalTimerViewController: UIViewController {
     lazy var exerciseButton: UIButton = {
         let button = UIButton()
         button.setTitle("Start", for: .normal)
-        button.backgroundColor = .brown
+        button.backgroundColor = .systemBrown
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 80)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -83,6 +83,8 @@ class IntervalTimerViewController: UIViewController {
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.title = "Interval Timer"
         
         exerciseButton.addAction(UIAction { [weak self] _ in
             guard let self = self else { return }
