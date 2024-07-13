@@ -38,7 +38,7 @@ class mainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Interval Timer"
+        navigationItem.title = "Interval Timer (Presets)"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(goToSettings))
         view.backgroundColor = .white
         view.addSubview(tableView)
@@ -77,5 +77,12 @@ class mainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.textLabel?.text = "\(name) - Workout: \(totalRepeatWorkout) x \(totalRounds) Sets"
         
         return cell
+    }
+    
+    // MARK: - UITableViewDelegate
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let preset = listOfPresets[indexPath.row]
+        let detailVC = PresetDetailViewController(preset: preset)
+        navigationController?.pushViewController(detailVC, animated: true)
     }
 }

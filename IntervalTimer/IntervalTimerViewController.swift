@@ -8,15 +8,29 @@
 import UIKit
 
 class IntervalTimerViewController: UIViewController {
+    var preset: [String: Any]
+    
+    init(preset: [String : Any]) {
+        self.preset = preset
+        super.init(nibName: nil, bundle: nil)
+
+    }
+    
+    required init?(coder: NSCoder) {
+        self.preset = [:]
+        super.init(coder: coder)
+    }
+    
     var workoutTimer: Timer?
     var restTimer: Timer?
-    let initialWorkoutTime = 5
+    var initialWorkoutTime = 5
     var workoutTime = 5
-    var repeatWorkout = 1
-    let totalRepeatWorkout = 3
-    let initialRestTime = 5
+    var totalRepeatWorkout = 3
+    var initialRestTime = 5
     var restTime = 5
-    let totalRounds = 3
+    var totalRounds = 3
+    
+    var repeatWorkout = 1
     var currentRound = 1
     
     var isPlay = false {
@@ -84,7 +98,15 @@ class IntervalTimerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = "Interval Timer"
+        initialWorkoutTime = preset["initialWorkoutTime"] as! Int
+        workoutTime = initialWorkoutTime
+        totalRepeatWorkout = preset["totalRepeatWorkout"] as! Int
+        initialRestTime = preset["initialRestTime"] as! Int
+        restTime = initialRestTime
+        totalRounds = preset["totalRounds"] as! Int
+        
+        print(initialWorkoutTime, workoutTime, totalRepeatWorkout, initialRestTime, restTime, totalRounds)
+        navigationItem.title = preset["name"] as? String
         
         exerciseButton.addAction(UIAction { [weak self] _ in
             guard let self = self else { return }
@@ -213,5 +235,11 @@ class IntervalTimerViewController: UIViewController {
 }
 
 #Preview {
-    IntervalTimerViewController()
+    IntervalTimerViewController(preset: [
+        "name": "Mountain Climber",
+        "initialWorkoutTime": 8,
+        "totalRepeatWorkout": 10,
+        "initialRestTime": 32,
+        "totalRounds": 10
+    ])
 }
