@@ -56,10 +56,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @objc func goToSettings() {
         let settingsVC = SettingsViewController()
         settingsVC.delegate = self
-        settingsVC.modalPresentationStyle = .pageSheet
-        if let sheet = settingsVC.sheetPresentationController {
-            sheet.detents = [.medium(), .large()]
-        }
+        settingsVC.modalPresentationStyle = .fullScreen
         present(settingsVC, animated: true, completion: nil)
     }
     
