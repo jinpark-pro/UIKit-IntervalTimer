@@ -7,7 +7,7 @@
 
 import UIKit
 
-class mainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SettingsViewControllerDelegate {
     var listOfPresets = [
         [
             "name": "Test",
@@ -55,11 +55,19 @@ class mainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     @objc func goToSettings() {
         let settingsVC = SettingsViewController()
+        settingsVC.delegate = self
         settingsVC.modalPresentationStyle = .pageSheet
         if let sheet = settingsVC.sheetPresentationController {
             sheet.detents = [.medium(), .large()]
         }
         present(settingsVC, animated: true, completion: nil)
+    }
+    
+    // MARK: - SettingsViewControllerDelegate
+    func didAddPreset(_ preset: [String : Any]) {
+        print("preset: \(preset)")
+        listOfPresets.append(preset)
+        tableView.reloadData()
     }
     
     // MARK: - UITabelViewDataSource

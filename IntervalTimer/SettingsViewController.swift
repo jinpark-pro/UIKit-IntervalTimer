@@ -7,13 +7,11 @@
 
 import UIKit
 
+protocol SettingsViewControllerDelegate: AnyObject {
+    func didAddPreset(_ preset: [String: Any])
+}
+
 class SettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
-    /*
-     let initialWorkoutTime = 5
-     let totalRepeatWorkout = 3
-     let initialRestTime = 5
-     let totalRounds = 3
-     */
     lazy var tableView: UITableView = {
         let tableView =  UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -23,7 +21,10 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     let cellReuseIdentifier = "CustomTableViewCell"
     let cellWithButtonReuseIdentifier = "CustomTableViewCellWithButton"
     
-    let titles = ["Workout Seconds", "Repeat Workout Times", "Rest Seconds", "Total Rounds"]
+    let titles = ["Name", "Workout Seconds", "Repeat Workout Times", "Rest Seconds", "Total Rounds", ""]
+    
+    var newPreset: [String: Any] = [:]
+    weak var delegate: SettingsViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,26 +46,56 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
             tableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
         ])
-        
     }
     
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        titles.count + 1
+        titles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
         if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: cellWithButtonReuseIdentifier, for: indexPath) as! CustomTableViewCellWithButton
-            
+            cell.button.addTarget(self, action: #selector(savePreset), for: .touchUpInside)
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! CustomTableViewCell
             cell.titleLabel.text = titles[indexPath.row]
-            cell.textField.placeholder = "Enter number here"
+            if indexPath.row == 0 {
+                cell.textField.placeholder = "Enter Preset Title"
+                cell.textField.keyboardType = .default
+            } else {
+                cell.textField.placeholder = "Enter Number Here"
+            }
             cell.textField.delegate = self
+            cell.textField.tag = indexPath.row
             
             return cell
         }
+    }
+    
+    // MARK - UITextFieldDelegate
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        
+        guard let value = Int(text) else {
+            newPreset["name"] = text
+            return
+        }
+        
+        switch textField.tag {
+        case 1: newPreset["initialWorkoutTime"] = value
+        case 2: newPreset["totalRepeatWorkout"] = value
+        case 3: newPreset["initialRestTime"] = value
+        case 4: newPreset["totalRounds"] = value
+        default: break
+        }
+    }
+    
+    @objc func savePreset() {
+        print("save preset: \(newPreset)")
+        delegate?.didAddPreset(newPreset)
+        dismiss(animated: true)
     }
 }
