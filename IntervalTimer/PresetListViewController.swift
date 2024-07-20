@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SettingsViewControllerDelegate {
+class PresetListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SettingsViewControllerDelegate {
     var listOfPresets = [
         [
             "name": "Test",
@@ -40,6 +40,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
         navigationItem.title = "Interval Timer (Presets)"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(goToSettings))
+        navigationItem.leftBarButtonItem = self.editButtonItem
         view.backgroundColor = .white
         view.addSubview(tableView)
         
@@ -53,6 +54,13 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         ])
     }
     
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        
+        tableView.setEditing(editing, animated: animated)
+    }
+    
+    // MARK: Methods
     @objc func goToSettings() {
         let settingsVC = SettingsViewController()
         settingsVC.delegate = self
@@ -89,5 +97,12 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let preset = listOfPresets[indexPath.row]
         let detailVC = PresetDetailViewController(preset: preset)
         navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            listOfPresets.remove(at: indexPath.row)
+            tableView.reloadData()
+        }
     }
 }
