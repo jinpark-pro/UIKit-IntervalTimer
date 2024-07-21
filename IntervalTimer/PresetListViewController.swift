@@ -8,22 +8,7 @@
 import UIKit
 
 class PresetListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SettingsViewControllerDelegate {
-    var listOfPresets = [
-        [
-            "name": "Test",
-            "initialWorkoutTime": 5,
-            "totalRepeatWorkout": 3,
-            "initialRestTime": 5,
-            "totalRounds": 3
-        ],
-        [
-            "name": "Mountain Climber",
-            "initialWorkoutTime": 8,
-            "totalRepeatWorkout": 10,
-            "initialRestTime": 32,
-            "totalRounds": 10
-        ],
-    ]
+    var listOfPresets: [[String: Any]] = []
     
     lazy private var tableView: UITableView = {
         let tableView = UITableView()
@@ -44,6 +29,7 @@ class PresetListViewController: UIViewController, UITableViewDataSource, UITable
         view.backgroundColor = .white
         view.addSubview(tableView)
         
+        loadPresets()
         
         let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
@@ -68,10 +54,38 @@ class PresetListViewController: UIViewController, UITableViewDataSource, UITable
         present(settingsVC, animated: true, completion: nil)
     }
     
+    func savePresets() {
+        UserDefaults.standard.set(listOfPresets, forKey: "savedPresets")
+    }
+    
+    func loadPresets() {
+        if let savedPresets = UserDefaults.standard.array(forKey: "savedPresets") as? [[String: Any]] {
+            listOfPresets = savedPresets
+        } else {
+            listOfPresets = [
+                [
+                    "name": "Test",
+                    "initialWorkoutTime": 5,
+                    "totalRepeatWorkout": 3,
+                    "initialRestTime": 5,
+                    "totalRounds": 3
+                ],
+                [
+                    "name": "Mountain Climber",
+                    "initialWorkoutTime": 8,
+                    "totalRepeatWorkout": 10,
+                    "initialRestTime": 32,
+                    "totalRounds": 10
+                ],
+            ]
+        }
+    }
+    
     // MARK: - SettingsViewControllerDelegate
     func didAddPreset(_ preset: [String : Any]) {
         print("preset: \(preset)")
         listOfPresets.append(preset)
+        savePresets()
         tableView.reloadData()
     }
     
@@ -102,6 +116,7 @@ class PresetListViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             listOfPresets.remove(at: indexPath.row)
+            savePresets()
             tableView.reloadData()
         }
     }
