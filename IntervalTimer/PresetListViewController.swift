@@ -53,8 +53,10 @@ class PresetListViewController: UIViewController, UITableViewDataSource, UITable
     @objc func goToSettings() {
         let settingsVC = SettingsViewController()
         settingsVC.delegate = self
-        settingsVC.modalPresentationStyle = .fullScreen
-        present(settingsVC, animated: true, completion: nil)
+        
+        let navController = UINavigationController(rootViewController: settingsVC)
+        navController.modalPresentationStyle = .formSheet
+        present(navController, animated: true, completion: nil)
     }
     
     func savePresets() {

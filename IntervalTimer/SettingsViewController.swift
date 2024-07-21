@@ -31,6 +31,8 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         super.viewDidLoad()
         navigationItem.title = "Settings"
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelAdd))
+        
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
@@ -94,9 +96,14 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
+    // MARK: - Methods
     @objc func savePreset() {
         print("save preset: \(newPreset)")
         delegate?.didAddPreset(newPreset)
+        dismiss(animated: true)
+    }
+    
+    @objc func cancelAdd() {
         dismiss(animated: true)
     }
 }
