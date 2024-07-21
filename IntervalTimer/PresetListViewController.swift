@@ -14,6 +14,7 @@ class PresetListViewController: UIViewController, UITableViewDataSource, UITable
         let tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.backgroundColor = .systemBackground
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -26,10 +27,12 @@ class PresetListViewController: UIViewController, UITableViewDataSource, UITable
         navigationItem.title = "Interval Timer (Presets)"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(goToSettings))
         navigationItem.leftBarButtonItem = self.editButtonItem
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         view.addSubview(tableView)
         
         loadPresets()
+        
+        setNavigationBarAppearance()
         
         let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
@@ -119,5 +122,29 @@ class PresetListViewController: UIViewController, UITableViewDataSource, UITable
             savePresets()
             tableView.reloadData()
         }
+    }
+    
+    // MARK: - Navigation Bar
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            setNavigationBarAppearance()
+        }
+    }
+    
+    func setNavigationBarAppearance() {
+        // Set navigation bar title color
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        
+        if traitCollection.userInterfaceStyle == .dark {
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        } else {
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
+        }
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
 }

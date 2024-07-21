@@ -70,6 +70,7 @@ class IntervalTimerViewController: UIViewController {
         label.font = UIFont.boldSystemFont(ofSize: 48)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .label
         return label
     }()
     lazy var secondsLabel: UILabel = {
@@ -77,6 +78,7 @@ class IntervalTimerViewController: UIViewController {
         label.font = UIFont.boldSystemFont(ofSize: 320)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .label
         return label
     }()
     lazy var roundLabel: UILabel = {
@@ -84,6 +86,7 @@ class IntervalTimerViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 32)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .label
         return label
     }()
     lazy var exerciseButton: UIButton = {
@@ -122,7 +125,7 @@ class IntervalTimerViewController: UIViewController {
         secondsLabel.text = "0"
         roundLabel.text = "Round 0 / 0"
         
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
         subContainer.addArrangedSubview(titleLabel)
         subContainer.addArrangedSubview(secondsLabel)

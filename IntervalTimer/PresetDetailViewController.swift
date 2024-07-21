@@ -24,6 +24,7 @@ class PresetDetailViewController: UIViewController {
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 24)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .label
         
         return label
     }()
@@ -43,7 +44,7 @@ class PresetDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         navigationItem.title = "Details"
         
         let initialWorkoutTime = preset["initialWorkoutTime"] as? Int ?? 0

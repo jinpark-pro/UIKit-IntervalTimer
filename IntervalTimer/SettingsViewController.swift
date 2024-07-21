@@ -15,6 +15,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     lazy var tableView: UITableView = {
         let tableView =  UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = .systemBackground
         return tableView
     }()
     
@@ -35,7 +36,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         tableView.register(CustomTableViewCellWithButton.self, forCellReuseIdentifier: cellWithButtonReuseIdentifier)
         
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         view.addSubview(tableView)
         
         let safeArea = view.safeAreaLayoutGuide
