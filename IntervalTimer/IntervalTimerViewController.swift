@@ -164,6 +164,7 @@ class IntervalTimerViewController: UIViewController {
     }
     
     func startTimer() {
+        playBeepEndSound()
         if isRest {
             startRestTimer()
         } else {
@@ -189,17 +190,16 @@ class IntervalTimerViewController: UIViewController {
         
         playBeepSound()
         
-        let startPreparationTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
+        _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
             guard let self = self else { return }
             preparationTime -= 1
             secondsLabel.text = "\(preparationTime)"
             
-            playBeepSound()
-            
-            if preparationTime == 0 {
+            if preparationTime > 0 {
+                playBeepSound()
+            } else {
                 timer.invalidate()
                 startTimer()
-                playBeepEndSound()
             }
         }
     }
@@ -210,8 +210,6 @@ class IntervalTimerViewController: UIViewController {
         self.titleLabel.text  = "Workout \(self.repeatWorkout) / \(self.totalRepeatWorkout)"
         self.secondsLabel.text = "\(self.workoutTime)"
         self.roundLabel.text = "Round \(self.currentRound) / \(self.totalRounds)"
-        
-        playBeepSound()
         
         workoutTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
@@ -224,14 +222,15 @@ class IntervalTimerViewController: UIViewController {
                 if repeatWorkout != totalRepeatWorkout {
                     repeatWorkout += 1
                     startWorkoutTimer()
+                    playBeepSound()
                     return
                 }
                 if currentRound == totalRounds {
                     endWorkout()
                 } else {
                     repeatWorkout = 1
-                    startRestTimer()
-                    playBeepEndSound()
+                    isRest = true
+                    startTimer()
                 }
             }
         }
@@ -245,7 +244,7 @@ class IntervalTimerViewController: UIViewController {
             guard let self = self else { return }
             restTime -= 1
             secondsLabel.text = "\(restTime)"
-            if restTime < 4 {
+            if restTime < 4 && restTime != 0 {
                 playBeepSound()
                 secondsLabel.textColor = .systemRed
             }
@@ -256,8 +255,8 @@ class IntervalTimerViewController: UIViewController {
                 currentRound += 1
                 if currentRound <= totalRounds {
                     secondsLabel.textColor = .label
-                    startWorkoutTimer()
-                    playBeepEndSound()
+                    isRest = false
+                    startTimer()
                 }
             }
         }
@@ -297,6 +296,7 @@ class IntervalTimerViewController: UIViewController {
     }
     
     func playBeepSound() {
+        print("Beep")
         if let player = audioPlayer1 {
             if player.isPlaying {
                 player.stop()
@@ -308,6 +308,7 @@ class IntervalTimerViewController: UIViewController {
     }
     
     func playBeepEndSound() {
+        print("Beep end")
         if let player = audioPlayer2 {
             if player.isPlaying {
                 player.stop()
