@@ -36,7 +36,7 @@ class IntervalTimerViewController: UIViewController {
     var isPlay = false {
         didSet {
             if isPlay {
-                startTimer()
+                preparationTimer()
             } else {
                 pauseTimer()
             }
@@ -115,11 +115,11 @@ class IntervalTimerViewController: UIViewController {
         
         exerciseButton.addAction(UIAction { [weak self] _ in
             guard let self = self else { return }
-            self.isPlay.toggle()
-            if self.isPlay {
-                self.exerciseButton.setTitle("Pause", for: .normal)
+            isPlay.toggle()
+            if isPlay {
+                exerciseButton.setTitle("Pause", for: .normal)
             } else {
-                self.exerciseButton.setTitle("Resume", for: .normal)
+                exerciseButton.setTitle("Resume", for: .normal)
             }
         }, for: .touchUpInside)
         
@@ -179,6 +179,31 @@ class IntervalTimerViewController: UIViewController {
         }
     }
     
+    func preparationTimer() {
+        pauseTimer()
+        
+        var preparationTime = 3
+        
+        self.titleLabel.text = "Preparation"
+        self.secondsLabel.text = "\(preparationTime)"
+        
+        playBeepSound()
+        
+        let startPreparationTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
+            guard let self = self else { return }
+            preparationTime -= 1
+            secondsLabel.text = "\(preparationTime)"
+            
+            playBeepSound()
+            
+            if preparationTime == 0 {
+                timer.invalidate()
+                startTimer()
+                playBeepEndSound()
+            }
+        }
+    }
+    
     func startWorkoutTimer() {
         self.isWorkout = true
         
@@ -190,22 +215,22 @@ class IntervalTimerViewController: UIViewController {
         
         workoutTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
-            self.workoutTime -= 1
-            self.secondsLabel.text = "\(self.workoutTime)"
-            if self.workoutTime == 0 {
-                self.workoutTimer?.invalidate()
-                self.isWorkout = false
-                self.workoutTime = self.initialWorkoutTime
-                if self.repeatWorkout != self.totalRepeatWorkout {
-                    self.repeatWorkout += 1
+            workoutTime -= 1
+            secondsLabel.text = "\(workoutTime)"
+            if workoutTime == 0 {
+                workoutTimer?.invalidate()
+                isWorkout = false
+                workoutTime = initialWorkoutTime
+                if repeatWorkout != totalRepeatWorkout {
+                    repeatWorkout += 1
                     startWorkoutTimer()
                     return
                 }
-                if self.currentRound == self.totalRounds {
+                if currentRound == totalRounds {
                     endWorkout()
                 } else {
-                    self.repeatWorkout = 1
-                    self.startRestTimer()
+                    repeatWorkout = 1
+                    startRestTimer()
                     playBeepEndSound()
                 }
             }
@@ -218,20 +243,20 @@ class IntervalTimerViewController: UIViewController {
         self.secondsLabel.text = "\(self.restTime)"
         restTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
-            self.restTime -= 1
-            self.secondsLabel.text = "\(self.restTime)"
-            if self.restTime < 4 {
+            restTime -= 1
+            secondsLabel.text = "\(restTime)"
+            if restTime < 4 {
                 playBeepSound()
-                self.secondsLabel.textColor = .systemRed
+                secondsLabel.textColor = .systemRed
             }
-            if self.restTime == 0 {
-                self.isRest = false
-                self.restTimer?.invalidate()
-                self.restTime = self.initialRestTime
-                self.currentRound += 1
-                if self.currentRound <= self.totalRounds {
-                    self.secondsLabel.textColor = .label
-                    self.startWorkoutTimer()
+            if restTime == 0 {
+                isRest = false
+                restTimer?.invalidate()
+                restTime = initialRestTime
+                currentRound += 1
+                if currentRound <= totalRounds {
+                    secondsLabel.textColor = .label
+                    startWorkoutTimer()
                     playBeepEndSound()
                 }
             }
