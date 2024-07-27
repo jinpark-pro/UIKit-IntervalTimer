@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C0AF54F2C5534B800144C1F /* beep-end.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3C0AF54E2C5534B800144C1F /* beep-end.wav */; };
+		3C0AF5512C55372500144C1F /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3C0AF5502C55372500144C1F /* beep.wav */; };
 		3C4B67752C34354000F0F21F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4B67742C34354000F0F21F /* SettingsViewController.swift */; };
 		3C4B67772C34411400F0F21F /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4B67762C34411400F0F21F /* CustomTableViewCell.swift */; };
 		3CA9B4312C1EAB49009FABE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA9B4302C1EAB49009FABE2 /* AppDelegate.swift */; };
@@ -21,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3C0AF54E2C5534B800144C1F /* beep-end.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "beep-end.wav"; sourceTree = "<group>"; };
+		3C0AF5502C55372500144C1F /* beep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep.wav; sourceTree = "<group>"; };
 		3C4B67742C34354000F0F21F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		3C4B67762C34411400F0F21F /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		3CA9B42D2C1EAB49009FABE2 /* IntervalTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntervalTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -50,6 +54,8 @@
 		3CA9B4242C1EAB49009FABE2 = {
 			isa = PBXGroup;
 			children = (
+				3C0AF5502C55372500144C1F /* beep.wav */,
+				3C0AF54E2C5534B800144C1F /* beep-end.wav */,
 				3CA9B42F2C1EAB49009FABE2 /* IntervalTimer */,
 				3CA9B42E2C1EAB49009FABE2 /* Products */,
 			);
@@ -140,9 +146,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C0AF5512C55372500144C1F /* beep.wav in Resources */,
 				3CA9B43A2C1EAB4A009FABE2 /* Assets.xcassets in Resources */,
 				3CA9B43D2C1EAB4A009FABE2 /* Base in Resources */,
 				3CA9B4382C1EAB49009FABE2 /* Base in Resources */,
+				3C0AF54F2C5534B800144C1F /* beep-end.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

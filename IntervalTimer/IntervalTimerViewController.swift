@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class IntervalTimerViewController: UIViewController {
     var preset: [String: Any]
@@ -13,7 +14,6 @@ class IntervalTimerViewController: UIViewController {
     init(preset: [String : Any]) {
         self.preset = preset
         super.init(nibName: nil, bundle: nil)
-
     }
     
     required init?(coder: NSCoder) {
@@ -44,6 +44,9 @@ class IntervalTimerViewController: UIViewController {
     }
     var isWorkout = false
     var isRest = false
+    
+    var audioPlayer1: AVAudioPlayer?
+    var audioPlayer2: AVAudioPlayer?
     
     lazy var container: UIStackView = {
         let stackView = UIStackView()
@@ -107,8 +110,7 @@ class IntervalTimerViewController: UIViewController {
         initialRestTime = preset["initialRestTime"] as! Int
         restTime = initialRestTime
         totalRounds = preset["totalRounds"] as! Int
-        
-        print(initialWorkoutTime, workoutTime, totalRepeatWorkout, initialRestTime, restTime, totalRounds)
+
         navigationItem.title = preset["name"] as? String
         
         exerciseButton.addAction(UIAction { [weak self] _ in
@@ -148,8 +150,11 @@ class IntervalTimerViewController: UIViewController {
             self.updateStackViewAxis()
         }
         updateStackViewAxis()
+        
+        prepareBeepSound()
     }
     
+    // MARK: - Methods
     func updateStackViewAxis() {
         if traitCollection.verticalSizeClass == .compact {
             container.axis = .horizontal
@@ -180,6 +185,9 @@ class IntervalTimerViewController: UIViewController {
         self.titleLabel.text  = "Workout \(self.repeatWorkout) / \(self.totalRepeatWorkout)"
         self.secondsLabel.text = "\(self.workoutTime)"
         self.roundLabel.text = "Round \(self.currentRound) / \(self.totalRounds)"
+        
+        playBeepSound()
+        
         workoutTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             self.workoutTime -= 1
@@ -198,6 +206,7 @@ class IntervalTimerViewController: UIViewController {
                 } else {
                     self.repeatWorkout = 1
                     self.startRestTimer()
+                    playBeepEndSound()
                 }
             }
         }
@@ -211,6 +220,9 @@ class IntervalTimerViewController: UIViewController {
             guard let self = self else { return }
             self.restTime -= 1
             self.secondsLabel.text = "\(self.restTime)"
+            if self.restTime < 4 {
+                playBeepSound()
+            }
             if self.restTime == 0 {
                 self.isRest = false
                 self.restTimer?.invalidate()
@@ -218,6 +230,7 @@ class IntervalTimerViewController: UIViewController {
                 self.currentRound += 1
                 if self.currentRound <= self.totalRounds {
                     self.startWorkoutTimer()
+                    playBeepEndSound()
                 }
             }
         }
@@ -234,6 +247,48 @@ class IntervalTimerViewController: UIViewController {
         self.isPlay = false
         self.isRest = false
         self.isWorkout = false
+    }
+    
+    func prepareBeepSound() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            if let beepSoundURL = Bundle.main.url(forResource: "beep", withExtension: "wav"),
+               let beepEndSoundURL = Bundle.main.url(forResource: "beep-end", withExtension: "wav")
+            {
+                audioPlayer1 = try AVAudioPlayer(contentsOf: beepSoundURL)
+                audioPlayer2 = try AVAudioPlayer(contentsOf: beepEndSoundURL)
+                audioPlayer1?.prepareToPlay()
+                audioPlayer2?.prepareToPlay()
+            } else {
+                print("Beep sound file not found")
+            }
+        } catch {
+            print("Failed to set up AVAudioSession or load beep sound")
+        }
+    }
+    
+    func playBeepSound() {
+        if let player = audioPlayer1 {
+            if player.isPlaying {
+                player.stop()
+            }
+            player.play()
+        } else {
+            print("Audio player1 is not initialized")
+        }
+    }
+    
+    func playBeepEndSound() {
+        if let player = audioPlayer2 {
+            if player.isPlaying {
+                player.stop()
+            }
+            player.play()
+        } else {
+            print("Audio player2 is not initialized")
+        }
     }
 }
 
