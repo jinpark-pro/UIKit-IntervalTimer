@@ -41,6 +41,10 @@ class PresetListViewController: UIViewController, UITableViewDataSource, UITable
             tableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
         ])
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, previousTraitCollection: UITraitCollection) in
+            self.setNavigationBarAppearance()
+        }
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -127,14 +131,6 @@ class PresetListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     // MARK: - Navigation Bar
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            setNavigationBarAppearance()
-        }
-    }
-    
     func setNavigationBarAppearance() {
         // Set navigation bar title color
         let appearance = UINavigationBarAppearance()
