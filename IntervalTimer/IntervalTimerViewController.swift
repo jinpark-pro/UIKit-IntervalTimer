@@ -78,7 +78,7 @@ class IntervalTimerViewController: UIViewController {
     }()
     lazy var secondsLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 320)
+        label.font = UIFont.boldSystemFont(ofSize: 280)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .label
@@ -222,6 +222,7 @@ class IntervalTimerViewController: UIViewController {
             self.secondsLabel.text = "\(self.restTime)"
             if self.restTime < 4 {
                 playBeepSound()
+                self.secondsLabel.textColor = .systemRed
             }
             if self.restTime == 0 {
                 self.isRest = false
@@ -229,6 +230,7 @@ class IntervalTimerViewController: UIViewController {
                 self.restTime = self.initialRestTime
                 self.currentRound += 1
                 if self.currentRound <= self.totalRounds {
+                    self.secondsLabel.textColor = .label
                     self.startWorkoutTimer()
                     playBeepEndSound()
                 }
